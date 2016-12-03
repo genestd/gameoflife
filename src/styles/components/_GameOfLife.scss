@@ -1,0 +1,23 @@
+.gol{
+  max-width: 100% !important;
+}
+.title{
+  margin: 10px 0 30px 5px;
+}
+.myNav{
+  max-width: 50% !important;
+  margin: 0;
+}
+.logo{
+  width: 75px;
+  height: 75px;
+}
+
+.hide{
+  width: 0 !important;
+  max-width: 0 !important;
+  transition: width .3s ease-out;
+}
+.show{
+  transition: width .3s ease-out;
+}
