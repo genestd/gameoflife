@@ -16,6 +16,14 @@ import Checkmark from 'grommet/components/icons/base/Checkmark';
 import Tiles from 'grommet/components/Tiles';
 import Tile from 'grommet/components/Tile';
 
+/**
+* This component renders the Nav Menu to allow the user to set game options.
+* The available options are Cell Color, Board Size and Game Speed.
+* The component is opened/closed by icons on the screen.  When clicked, they
+* set a CSS class to place a transition on the component and slide it
+* open or closed.
+*
+*/
 const GLNav = props => {
     return(
       <SideBar colorIndex="neutral-1-a" className={props.nav}>
@@ -70,6 +78,15 @@ const GLNav = props => {
     )
 }
 
+/**
+* Redux function to map state to props.  This component uses:
+*  nav - to set the CSS className and initiate the transition
+*  color - to show which color the cells will render
+*  size - to show what size board is selected by user
+*  speed - to show which speed is selected by user
+*
+* @param {object} state - the redux store
+*/
 const mapStateToProps = (state) => {
   return ({
   nav: state.showNav.className,
@@ -79,6 +96,12 @@ const mapStateToProps = (state) => {
   })
 };
 
+/**
+* Redux function to map dispatch to props.  It binds dispatch to the imported
+* actions functions and passes them as props.  This component uses the
+* toggleNav() function to show/hide the Nav Menu and the
+* setColor(), setSize(), and setSpeed() functions to update user settings.
+*/
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch)
 });

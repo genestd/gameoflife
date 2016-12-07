@@ -25,12 +25,23 @@ const GLHeader = props => {
     );
   }
 
+/**
+* Redux function to map state to props.  This component does not use any values
+* from the store, it only dispatches actions.
+*
+* @param {object} state - the redux store
+*/
 const mapStateToProps = function(store) {
   return {
-    hideInfo: store.showNav.hideInfo
   };
 }
 
+/**
+* Redux function to map dispatch to props.  It binds dispatch to the imported
+* actions functions and passes them as props.  This component uses the
+* toggleInfo() function to show/hide the "About" Layer and the toggleNav() function
+* to show/hide the Nav Menu.
+*/
 const mapDispatchToProps = (dispatch) => ({
  actions: bindActionCreators(GLActions, dispatch)
 });

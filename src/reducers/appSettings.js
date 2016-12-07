@@ -3,12 +3,23 @@ import {
   SET_SIZE,
   TOGGLE_CELL,
   UPDATE_BOARD,
-  CLEAR_BOARD,
   SEED_BOARD,
   SET_MOBILE,
   SET_SPEED
 } from '../actions';
 
+/**
+* This function populates the "board" with an initial random population.  It
+* takes the height/width of the game board and creates an object for each cell.
+* The object key is the XY coordinates in the form 0x0y.  The value is an object
+* that contains a boolean representing the state of the cell and an array listing
+* the cell's neighbors.
+*
+* @param {object} board - the current board of cells
+* @param {number} width - the width of the board
+* @param {number} height - the height of the board
+*@return {object} newBoard - a new board with randomized cells
+*/
 const seed = (board, width, height) => {
   let newBoard = Object.assign({}, board)
   for( let x=0; x<width; x++){
@@ -66,6 +77,17 @@ const seed = (board, width, height) => {
   return newBoard;
 }
 
+/**
+* This function processes a generation of the Game of Life.  It takes a board,
+* a height and a width.  For each cell in the board, it checks the neighbors array
+* and calculates how many neighbors are living.  Then it applies Conway's rules to
+* determine the new state based on previous state and number of live neighbors
+*
+* @param {object} board - the current board of cells
+* @param {number} width - the width of the board
+* @param {number} height - the height of the board
+*@return {object} newBoard - a new board with Conway's rules applied
+*/
 const lifeCycle = (board, height, width) => {
   let newBoard = Object.assign({}, board)
   for( var prop in board){
@@ -98,6 +120,9 @@ const lifeCycle = (board, height, width) => {
   return newBoard;
 }
 
+/**
+* The default state for this reducer
+*/
 const INITIAL_STATE = { color: "ok",
                         mobile: undefined,
                         boardSize: {width: 50, height: 30, id: 2},
@@ -105,7 +130,19 @@ const INITIAL_STATE = { color: "ok",
                         speed: {speed: 500, id: 1}
                       };
 
-
+/**
+* The appSettings reducer.  It handles the following actions:
+*   setColor(): called when user changes the color via settings menu
+*   setSize(): called when user changes the size via settings Menu
+*   toggleCell(): called when user taps cell to toggle state (alive/dead)
+*   updateBoard(): called when game is running to process a generation
+*   seedBoard(): called when board size changes to set initial random state
+*   setMobile(): called when game is started to determine initial board size
+*   setSpeed(): called when user changes the speed via the settings menu
+*
+* @param {object} state - the current state
+* @param {object} action - the action that was dispatched
+*/
 const appSettings = function( state=INITIAL_STATE, action ){
   let newState
 
@@ -120,7 +157,6 @@ const appSettings = function( state=INITIAL_STATE, action ){
         newState.boardSize = action.payload;
         newState.lives = seed(Object.assign({}), newState.boardSize.width, newState.boardSize.height)
       }
-
       return newState;
 
     case TOGGLE_CELL:
@@ -129,10 +165,6 @@ const appSettings = function( state=INITIAL_STATE, action ){
       let newVal = state.lives[action.key].alive ? false : true
       let newLife = Object.assign({}, state.lives[action.key], {alive: newVal} )
       newState = Object.assign( {}, state, {lives: Object.assign({}, state.lives, {[key]: newLife})} )
-      return newState;
-
-    case CLEAR_BOARD:
-      newState = Object.assign( {}, state, {lives: initialise( [], state.boardSize.height, state.boardSize.width)})
       return newState;
 
     case UPDATE_BOARD:
